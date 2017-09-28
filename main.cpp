@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <iostream>
+#include <time.h>
 
 using namespace std;
 
@@ -9,6 +10,9 @@ using namespace std;
 
 int C;
 int N;
+int LLEGARON;
+
+int STEC;
 
 int T,TF;
 int TPSA,TPLL;
@@ -56,6 +60,10 @@ int MIN_TPS(){
 
 
 void primera_rama() {
+    STEC = STEC + (TPLL-T)*GC;
+
+    LLEGARON++;
+
     SPS = SPS + (TPLL-T)*(GA+GC);
     T = TPLL;
     IA = GENERAR_IA();
@@ -87,6 +95,8 @@ void primera_rama() {
 }
 
 void segunda_rama() {
+    STEC = STEC + (TPS[I]-T)*GC;
+
     SPS = SPS + (TPS[I] - T)*(GA + GC);
     T = TPS[I];
     GA = GA - 1;
@@ -110,6 +120,8 @@ void segunda_rama() {
 }
 
 void tercera_rama() {
+    STEC = STEC + (TPSA-T)*GC;
+
     SPS = SPS + (TPSA - T)*(GA + GC);
     T = TPSA;
     GA = GA - 1;
@@ -139,8 +151,13 @@ void imprimir_resultados(){
     PTO = (STO*100)/T;
     PTE = (SPS-STC)/NT;
 
+    float PTEC = STEC / NT;
+
     printf("PTO = %.2f%%\n", PTO);
     printf("PTE = %.2fm\n", PTE);
+    printf("PTE2 = %.2fm\n", PTEC);
+    printf("LLEGADAS = %d\n", LLEGARON);
+    printf("SALIDAS = %d\n", NT);
 
     for (I=0; I<N; I++){
         PDA = (CDA[I]*100)/NT;
@@ -159,6 +176,9 @@ void inicializar_variables() {
     }
     GC = 0;
     GA = 0;
+
+    STEC = 0;
+    LLEGARON = 0;
 
     SPS = 0;
     STC = 0;
@@ -204,28 +224,47 @@ void simular() {
     }
 
     if (T <= TF) goto A;
-
+/*
+    if (GA + GC > 0) {
+        TPLL = HV;
+        goto A;
+    }
+*/
     imprimir_resultados();
 }
 
+
 int GENERAR_IA() {
-    return 15;
+    return 1.9082*((1-pow(1-random(),0.10929))/0.10929)-0.7793;
 }
 
 int GENERAR_TC() {
-    return 16;
+    return 1.5+(3-1.5)*random();
 }
 
-int main(){
 
+/*
+int GENERAR_IA() {
+    return 9;
+}
+
+int GENERAR_TC() {
+    return 20;
+}
+*/
+
+int main(){
+    int seed = time(NULL);
+    srand(seed);
 
     for (C=1; C<5; C++) {
-        for (N=0; N<3; N++) {
+        for (N=0; N<5; N++) {
 
             free(TPS);
             free(CDA);
             TPS = (int*)calloc(N,sizeof(int));
             CDA = (int*)calloc(N,sizeof(int));
+
 
             printf("C=%d N=%d\n", C, N);
             inicializar_variables();
