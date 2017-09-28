@@ -139,12 +139,12 @@ void imprimir_resultados(){
     PTO = (STO*100)/T;
     PTE = (SPS-STC)/NT;
 
-    cout<<"Porcentaje de tiempo ocioso de la administradora: " << PTO << endl;
-    cout<<"Promedio de tiempo de espera por documento: " << PTE << endl;
+    printf("PTO = %.2f%%\n", PTO);
+    printf("PTE = %.2fm\n", PTE);
 
     for (I=0; I<N; I++){
         PDA = (CDA[I]*100)/NT;
-        cout<<"Porcentaje de documentos atentidos por el puesto " << I << " respecto del total de documentos: "<< PDA << endl;
+        printf("PDA[%d] = %.2f%%\n", I+1, PDA);
     }
 }
 
@@ -209,16 +209,24 @@ void simular() {
     imprimir_resultados();
 }
 
+int GENERAR_IA() {
+    return 15;
+}
+
+int GENERAR_TC() {
+    return 50;
+}
+
 int main(){
 
 
-    for (C=1; C<10; C++) {
-        for (N=1; N<10; N++) {
+    for (C=1; C<5; C++) {
+        for (N=0; N<6; N++) {
 
             free(TPS);
             free(CDA);
-            TPS =  (int*) calloc(N,sizeof(int));
-            CDA =  (int*) calloc(N,sizeof(int));
+            TPS = (int*)calloc(N,sizeof(int));
+            CDA = (int*)calloc(N,sizeof(int));
 
             printf("C=%d N=%d\n", C, N);
             inicializar_variables();
