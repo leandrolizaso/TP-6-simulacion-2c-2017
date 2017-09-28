@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define HV HUGE_VALF
+#define HV 2147483647
 
 int C;
 int N;
@@ -155,7 +155,8 @@ void inicializar_variables() {
     TPLL = 0;
     TPSA = HV;
     for (I=0; I<N; I++) {
-          }
+        TPS[I] = HV;
+    }
     GC = 0;
     GA = 0;
 
@@ -172,8 +173,6 @@ void inicializar_variables() {
 float random() {
     return (float) rand() / (float) RAND_MAX;
 }
-
-
 
 void simular() {
 
@@ -214,14 +213,14 @@ int GENERAR_IA() {
 }
 
 int GENERAR_TC() {
-    return 50;
+    return 16;
 }
 
 int main(){
 
 
     for (C=1; C<5; C++) {
-        for (N=0; N<6; N++) {
+        for (N=0; N<3; N++) {
 
             free(TPS);
             free(CDA);
